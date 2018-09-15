@@ -24,7 +24,8 @@
     "babel-preset-stage-1": "^6.24.1",
     "jest": "^23.5.0",
     "webpack": "^3.5.6",
-    "webpack-dev-server": "^2.9.7"
+    "webpack-dev-server": "^2.9.7",
+    "file-loader": "^2.0.0"
   },
   "repository": {
     "type": "git",
@@ -36,7 +37,6 @@
   },
   "homepage": "",
   "dependencies": {
-    "file-loader": "^2.0.0",
     "frameani": "^1.0.2"
   }
 }

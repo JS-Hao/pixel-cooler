@@ -4,11 +4,61 @@
 <head>
     <meta charset="utf-8">
     <title>test page</title>
+    <style type="text/css">
+      #canvas {
+        display: block;
+        margin: 0 auto;
+      }
+      .btn-wrapper {
+        text-align: center;
+      }
+      button {
+        margin: 10px;
+        padding: 4px;
+        border: 1px solid #444;
+        background: #fff;
+        color: #444;
+        outline: none;
+        cursor: pointer;
+      }
+      button:hover {
+        color: #444;
+        background: #ddd;
+      }
+    </style>
 </head>
 
 <body>
-  <canvas id="canvas" width="300" height="400"></canvas>
+  <canvas id="canvas" width="300" height="300"></canvas>
+  <div class="btn-wrapper">
+    <button class="start">START</button>
+    <button class="end">END</button>
+    <button class="stop">STOP</button>
+    <button class="reset">RESET</button>
+  </div>
+  
+
   <script type="text/javascript" src="pixel-cooler.min.js"></script>
+  <script type="text/javascript">
+    const el = e => document.querySelector(e);
+
+    const canvas = el('#canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.rect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+
+    const pixelCooler = new PixelCooler({
+      canvas: document.querySelector('#canvas'),
+      type: 'gridTranslateIn',
+      duration: 3000,
+    });
+
+    el('.start').onclick = () => pixelCooler.play();
+    el('.end').onclick = () => pixelCooler.end();
+    el('.stop').onclick = () => pixelCooler.stop();
+    el('.reset').onclick = () => pixelCooler.reset();
+  </script>
 </body>
 
 </html>
