@@ -54,6 +54,7 @@ pixelCooler.play();
 
 创建一个PixelCooler实例
 
+
 ### pixelCooler.on(name, callback)
 
 * `name` <string> 事件名称
@@ -62,17 +63,20 @@ pixelCooler.play();
 
 可监听事件且响应回调函数
 
+
 ### pixelCooler.play()
 
 * Returns  <PixelCooler> pixelCooler自身
 
 播放动画
 
+
 ### pixelCooler.stop()
 
 * Returns  <PixelCooler> pixelCooler自身
 
 暂停动画
+
 
 ### pixelCooler.end()
 
@@ -81,13 +85,11 @@ pixelCooler.play();
 结束动画
 
 
-
 ### pixelCooler.reset()
 
 * Returns  <PixelCooler> pixelCooler自身
 
 重置动画
-
 
 
 ### PixelCooler.custom(type, renderFunction)
