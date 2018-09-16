@@ -51,9 +51,7 @@ pixelCooler.play();
   * `type` <string> 动画特效类型，**Default: ** `normal`
   * `duration` <number> 动画时长，**Default: ** `1000`ms
 * Returns <PixelCooler>
-
 创建一个PixelCooler实例
-
 
 #### pixelCooler.on(name, callback)
 
