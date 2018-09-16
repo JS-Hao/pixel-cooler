@@ -50,7 +50,7 @@ pixelCooler.play();
   * **canvas** `object` 用于渲染动画的canvas元素
   * **type** `string` 动画特效类型，**Default: ** `normal`
   * **duration** `number` 动画时长，**Default: ** `1000`ms
-* ****returns**** `PixelCooler` 创建一个PixelCooler实例
+* **returns** `PixelCooler` 创建一个PixelCooler实例
 
 
 ### pixelCooler.on(name, callback)
@@ -61,6 +61,13 @@ pixelCooler.play();
 
 可监听事件且响应回调函数
 
+### pixelCooler.off(name, [callback])
+
+* **name** 要移除的事件名
+* ***callback* [可选] 移除的函数，若指定了函数，则移除该函数，若无该参数，则默认移除掉该事件上所有监听的回调函数
+* **returns** `PixelCooler` pixelCooler自身
+
+移除指定事件下的回调函数
 
 ### pixelCooler.play()
 

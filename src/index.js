@@ -6,15 +6,24 @@ class PixelCooler {
   constructor({ canvas, type = "normal", duration = 1000 } = {}) {
     this._canvas = canvas;
     this._duration = duration;
-
     this._aniFn = this._getAniFn(type);
+    this._eventsQueue = this._initEventsQueue();
     this._getCanvasInfo(this._canvas);
 
     this._frameani = new Frameani({
-      value: [0, 100],
+      value: [0, 1],
       duration: this._duration,
       render: this._getFrameaniRender(this._aniFn)
     });
+  }
+
+  _initEventsQueue() {
+    return {
+      play: [],
+      end: [],
+      stop: [],
+      reset: [],
+    };
   }
 
   _getCanvasInfo(canvas) {
@@ -83,20 +92,49 @@ class PixelCooler {
     };
   }
 
+  _fireEventsCallback(eventName) {
+    this._eventsQueue[eventName].forEach(fn => fn());
+  }
+
   play() {
+    this._fireEventsCallback('play');
     this._frameani.play();
+    return this;
   }
 
   stop() {
+    this._fireEventsCallback('stop');
     this._frameani.stop();
+    return this;
   }
 
   end() {
+    this._fireEventsCallback('end');
     this._frameani.end();
+    return this;
   }
 
   reset() {
+    this._fireEventsCallback('reset');
     this._frameani.reset();
+    return this;
+  }
+
+  on(eventName, callback) {
+    if (this._eventsQueue[eventName]) {
+      this._eventsQueue[eventName].push(callback);
+    }
+    return this;
+  }
+
+  off(eventName, callback) {
+    if (callback && typeof callback === 'function') {
+      const list = this._eventsQueue[eventName];
+      this._eventsQueue[eventName] = list.filter(fn => fn !== callback);
+    } else {
+      this._eventsQueue[eventName] = [];
+    }
+    return this;
   }
 }
 

@@ -1,8 +1,10 @@
 export default {
-  normal: function() {},
+  normal: function(pixel) {
+    return pixel;
+  },
 
-  gridTranslateIn: function(pixel, progress, x, y, width, height) {
-    const value = (progress / 100) * 255;
+  gridCutIn: function(pixel, progress, x, y, width, height) {
+    const value = progress * 255;
     if (
       y / height < value / 255 &&
       parseInt(y / 5) % 2 === 0 &&
@@ -14,5 +16,14 @@ export default {
       pixel.a = 0;
     }
     return pixel;
-  }
+  },
+
+  granularCutInLeft: function(pixel, progress, x, y, width, height) {
+    if (x / width <= progress) {
+      pixel.a = Math.random() < progress ? pixel.a : 0;    
+    } else {
+      pixel.a = 0;
+    }
+    return pixel;
+  } 
 };
