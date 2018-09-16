@@ -46,53 +46,52 @@ pixelCooler.play();
 
 #### new PixelCooler(options)
 
-* `options`  <object> 参数如下：
-  * `canvas` <object> 用于渲染动画的canvas元素
-  * `type` <string> 动画特效类型，**Default: ** `normal`
-  * `duration` <number> 动画时长，**Default: ** `1000`ms
-* Returns <PixelCooler>
-
-创建一个PixelCooler实例
+* **options**  `object` 参数如下：
+  * **canvas** `object` 用于渲染动画的canvas元素
+  * **type** `string` 动画特效类型，**Default: ** `normal`
+  * **duration** `number` 动画时长，**Default: ** `1000`ms
+* ****returns**** `PixelCooler` 创建一个PixelCooler实例
 
 
-#### pixelCooler.on(name, callback)
+### pixelCooler.on(name, callback)
 
-* `name` <string> 事件名称
-* `callback` <function> 响应事件
-* Returns <PixelCooler> pixelCooler自身
+* **name** `string` 事件名称
+* **callback** `function` 响应事件
+* **returns** `PixelCooler` pixelCooler自身
 
 可监听事件且响应回调函数
 
-#### pixelCooler.play()
 
-* Returns  <PixelCooler> pixelCooler自身
+### pixelCooler.play()
+
+* **returns**  `PixelCooler` pixelCooler自身
 
 播放动画
 
 
-#### pixelCooler.stop()
+### pixelCooler.stop()
 
-* Returns  <PixelCooler> pixelCooler自身
+* **returns**  `PixelCooler` pixelCooler自身
 
 暂停动画
 
 
-#### pixelCooler.end()
+### pixelCooler.end()
 
-* Returns  <PixelCooler> pixelCooler自身
+* **returns**  `PixelCooler` pixelCooler自身
 
 结束动画
 
 
-#### pixelCooler.reset()
+### pixelCooler.reset()
 
-* Returns  <PixelCooler> pixelCooler自身
+* **returns**  `PixelCooler` pixelCooler自身
 
 重置动画
 
 
-#### PixelCooler.custom(type, renderFunction)
+### PixelCooler.custom(type, renderFunction)
 
-* `type` <string> 自定义动画特效名称
-* `renderFunction` <Function> 自定义像素渲染函数
+* **type** `string` 自定义动画特效名称
+* **renderFunction** `Function` 自定义像素渲染函数
 
