@@ -1,20 +1,27 @@
 {
   "name": "pixel-cooler",
   "version": "0.0.1",
-  "description": "",
+  "description": "PixelCooler是一个轻量的canvas像素动画库，它可以帮助你实现像素级别的炫酷动画特效！",
   "main": "src/index.js",
   "scripts": {
-    "dev": "webpack-dev-server --devtool eval-source-map --progress --colors --hot --inline --content-base ./dist",
-    "build": "webpack --progress --colors",
-    "test": "jest"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "JS-HAO",
-  "jest": {
-    "transform": {
-      "^.+\\.js$": "babel-jest"
-    }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JS-Hao/pixel-cooler.git"
   },
+  "keywords": [
+    "animation",
+    "canvas",
+    "pixel",
+    "custom"
+  ],
+  "author": "JS-Hao",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JS-Hao/pixel-cooler/issues"
+  },
+  "homepage": "https://github.com/JS-Hao/pixel-cooler#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-jest": "^23.4.2",
@@ -27,15 +34,6 @@
     "webpack-dev-server": "^2.9.7",
     "file-loader": "^2.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
-  "keywords": ["animation", "canvas", "pixel"],
-  "bugs": {
-    "url": ""
-  },
-  "homepage": "",
   "dependencies": {
     "frameani": "^1.0.2"
   }
