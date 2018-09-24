@@ -8,6 +8,8 @@ PixelCooler具备以下特征：
 * 高自由度，你完全可以自定义一个属于你自己的动画特效
 * 具备基本的动画事件和回调
 
+关键词：animation canvas pixel
+
 ## DEMO
 
 ## 快速开始

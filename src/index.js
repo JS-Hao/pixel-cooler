@@ -1,6 +1,5 @@
 import Frameani from "frameani";
 import defaultAniFn from "./defaultAniFn";
-console.log(defaultAniFn);
 
 class PixelCooler {
   constructor({ canvas, type = "normal", duration = 1000 } = {}) {
@@ -8,6 +7,8 @@ class PixelCooler {
     this._duration = duration;
     this._aniFn = this._getAniFn(type);
     this._eventsQueue = this._initEventsQueue();
+    this._blockWidth = 30;
+    this._blockHeight = 30;
     this._getCanvasInfo(this._canvas);
 
     this._frameani = new Frameani({
@@ -28,7 +29,7 @@ class PixelCooler {
 
   _getCanvasInfo(canvas) {
     this._ctx = canvas.getContext("2d");
-    this._imageData = this._ctx.getImageData(
+    this._imageDataArr = this._ctx.getImageData(
       0,
       0,
       canvas.width,
@@ -48,16 +49,16 @@ class PixelCooler {
     return progress => {
       const width = this._canvas.width,
         height = this._canvas.height,
-        imageData = this._imageData,
-        u8cArray = new Uint8ClampedArray(imageData.length);
+        imageDataArr = this._imageDataArr,
+        u8cArray = new Uint8ClampedArray(imageDataArr.length),
+        blockWidth = this._blockWidth,
+        blockHeight = this._blockHeight;
 
-      for (let i = 0; i < imageData.length; i += 4) {
-        const { x, y } = this._getPixelCoordinate(i, width, height);
-        const curPixel = this._getCurrentPixel(imageData, i);
-        const nextPixel = this._aniFn(curPixel, progress, x, y, width, height);
-        this._putDataIntoU8cArray(u8cArray, nextPixel, i);
+      const loopFn = opt => {
+        const updatedBlockPixelArr = this._aniFn(opt);
+        this._putDataIntoU8cArray(u8cArray, updatedBlockPixelArr, opt.x, opt.y, opt.blockWidth, opt.blockHeight);
       }
-
+      this._loopImageDataByBlockPixel(blockWidth, blockHeight, loopFn, progress);
       this._reDraw(u8cArray, width, height);
     };
   }
@@ -68,21 +69,67 @@ class PixelCooler {
     this._ctx.putImageData(imageData, 0, 0);
   }
 
-  _putDataIntoU8cArray(u8cArray, pixel, i) {
-    u8cArray[i] = pixel.r;
-    u8cArray[i + 1] = pixel.g;
-    u8cArray[i + 2] = pixel.b;
-    u8cArray[i + 3] = pixel.a;
-  }
-
-  _getCurrentPixel(imageData, i) {
+  _getCurrentPixel(imageDataArr, i) {
     return {
-      r: imageData[i],
-      g: imageData[i + 1],
-      b: imageData[i + 2],
-      a: imageData[i + 3]
+      r: imageDataArr[i],
+      g: imageDataArr[i + 1],
+      b: imageDataArr[i + 2],
+      a: imageDataArr[i + 3]
     };
   }
+
+  _putDataIntoU8cArray(u8cArray, updatedBlockPixelArr, x, y, blockWidth, blockHeight) {
+    for (let i = y; i < y + blockHeight; i++) {
+      for (let j = x; j < x + blockWidth; j++) {
+        const k = (i * this._canvas.width + j) * 4;
+        const z = ((i - y) * blockWidth + (j - x));
+
+        u8cArray[k] = updatedBlockPixelArr[z].r;
+        u8cArray[k + 1] = updatedBlockPixelArr[z].g;
+        u8cArray[k + 2] = updatedBlockPixelArr[z].b;
+        u8cArray[k + 3] = updatedBlockPixelArr[z].a;
+      }
+    }
+  }
+
+  _getBlockPixel(x, y, blockWidth, blockHeight) {
+    const arr = [],
+      imageDataArr = this._imageDataArr;
+
+    for (let i = y; i < y + blockHeight; i++) {
+      for (let j = x; j < x + blockWidth; j++) {
+        const k = (i * blockWidth + j) * 4;
+        arr.push({
+          r: imageDataArr[k],
+          g: imageDataArr[k + 1],
+          b: imageDataArr[k + 2],
+          a: imageDataArr[k + 3],
+        });
+      }
+    }
+    return arr;
+  }
+
+  _loopImageDataByBlockPixel(blockWidth, blockHeight, loopFn, progress) {
+    const imageDataArr = this._imageDataArr,
+      width = this._canvas.width,
+      height = this._canvas.height;
+    for (let y = 0; y < height; y += blockHeight) {
+      for (let x = 0; x < width; x += blockWidth) {
+        const blockPixelArr = this._getBlockPixel(x, y, blockWidth, blockHeight);
+        loopFn({
+          progress,
+          blockPixelArr,
+          x,
+          y, 
+          width, 
+          height,
+          blockWidth,
+          blockHeight,
+        })
+      }
+    }
+  } 
 
   _getPixelCoordinate(i, width, height) {
     const index = i / 4;
