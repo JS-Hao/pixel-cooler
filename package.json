@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/JS-Hao/pixel-cooler/issues"
   },
-  "homepage": "https://github.com/JS-Hao/pixel-cooler/tree/master/dist/html",
+  "homepage": "https://github.com/JS-Hao/pixel-cooler#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-jest": "^23.4.2",
