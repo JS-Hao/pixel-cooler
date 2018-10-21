@@ -5,14 +5,19 @@
     <meta charset="utf-8">
     <title>test page</title>
     <style type="text/css">
-      #canvas {
-        display: block;
-        margin: 0 auto;
-      }
-      .btn-wrapper {
+      #app {
+        display: flex;
+      }    
+      .wrapper {
+        width: 600px;
+        height: 250px;
         text-align: center;
       }
-      button {
+      .canvas {
+        margin: 0 auto;
+        display: block;
+      }
+      .btn {
         margin: 10px;
         padding: 4px;
         border: 1px solid #444;
@@ -21,7 +26,7 @@
         outline: none;
         cursor: pointer;
       }
-      button:hover {
+      .btn:hover {
         color: #444;
         background: #ddd;
       }
@@ -29,35 +34,78 @@
 </head>
 
 <body>
-  <canvas id="canvas" width="300" height="300"></canvas>
-  <div class="btn-wrapper">
-    <button class="start">START</button>
-    <button class="end">END</button>
-    <button class="stop">STOP</button>
-    <button class="reset">RESET</button>
-  </div>
-  
-
+  <div id="app"></div>
   <script type="text/javascript" src="pixel-cooler.min.js"></script>
   <script type="text/javascript">
-    const el = e => document.querySelector(e);
+    const types = [
+      {
+        type: 'fadeIn',
+        blockWidth: 5,
+        blockHeight: 5,
+        timingFunction: 'easeInOutExpo',
+        duration: 3000,
+      },
+      {
+        type: 'granularCutInLeft',
+        blockWidth: 20,
+        blockHeight: 20,
+      },
+      {
+        type: 'wave',
+        blockWidth: 10,
+        blockHeight: 10,
+      }
+    ];
 
-    const canvas = el('#canvas');
-    // const ctx = canvas.getContext('2d');
-    // ctx.rect(0, 0, canvas.width, canvas.height);
-    // ctx.fillStyle = 'red';
-    // ctx.fill();
-
-    const pixelCooler = new PixelCooler({
-      canvas: document.querySelector('#canvas'),
-      type: 'granularCutInLeft',
-      duration: 1000,
+    types.forEach(type => {
+      const canvas = createCanvas(400, 200);
+      const pixelCooler = new PixelCooler(Object.assign({}, { canvas }, type));
+      createContent(canvas, pixelCooler);
+      pixelCooler.play({
+        preColor: [255, 165, 0, 255],
+        nextColor: [0, 0, 128, 255]
+      });
+      pixelCooler.reset();
     });
 
-    el('.start').onclick = () => pixelCooler.play();
-    el('.end').onclick = () => pixelCooler.end();
-    el('.stop').onclick = () => pixelCooler.stop();
-    el('.reset').onclick = () => pixelCooler.reset();
+    function createContent(canvas, pixelCooler) {
+      const cpn = [
+        canvas,
+        createBtn('START', () => pixelCooler.play({
+          preColor: [255, 165, 0, 255],
+          nextColor: [0, 0, 128, 255]
+        })),
+        createBtn('END', () => pixelCooler.end()),
+        createBtn('STOP', () => pixelCooler.stop()),
+        createBtn('RESET', () => pixelCooler.reset()),
+      ];
+
+      return createWrapper(cpn);
+    }
+
+    function createCanvas(w, h) {
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      canvas.className = 'canvas';
+      return canvas;
+    }
+
+    function createBtn(text, cb) {
+      const btn = document.createElement('button');
+      btn.innerText = text;
+      btn.addEventListener('click', cb, false);
+      btn.className = 'btn';
+      return btn;
+    }
+
+    function createWrapper(cpn) {
+      const div = document.createElement('div');
+      div.className = 'wrapper';
+      cpn.forEach(c => div.appendChild(c));
+      document.querySelector('#app').appendChild(div);
+      return div;
+    }
   </script>
 </body>
 

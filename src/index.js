@@ -2,18 +2,21 @@ import Frameani from "frameani";
 import defaultAniFn from "./defaultAniFn";
 
 class PixelCooler {
-  constructor({ canvas, type = "normal", duration = 1000 } = {}) {
+  constructor({ canvas, type = "normal", duration = 1000, blockWidth = 1, blockHeight = 1, timingFunction = 'linear' } = {}) {
     this._canvas = canvas;
     this._duration = duration;
     this._aniFn = this._getAniFn(type);
     this._eventsQueue = this._initEventsQueue();
-    this._blockWidth = 30;
-    this._blockHeight = 30;
+    this._blockWidth = blockWidth;
+    this._blockHeight = blockHeight;
+    this._timingFunction = timingFunction;
     this._getCanvasInfo(this._canvas);
+    this._extraProps = {};
 
     this._frameani = new Frameani({
       value: [0, 1],
       duration: this._duration,
+      timingFunction: this._timingFunction,
       render: this._getFrameaniRender(this._aniFn)
     });
   }
@@ -45,6 +48,7 @@ class PixelCooler {
     return func;
   }
 
+
   _getFrameaniRender(aniFn) {
     return progress => {
       const width = this._canvas.width,
@@ -55,7 +59,7 @@ class PixelCooler {
         blockHeight = this._blockHeight;
 
       const loopFn = opt => {
-        const updatedBlockPixelArr = this._aniFn(opt);
+        const updatedBlockPixelArr = this._aniFn(opt, this._extraProps);
         this._putDataIntoU8cArray(u8cArray, updatedBlockPixelArr, opt.x, opt.y, opt.blockWidth, opt.blockHeight);
       }
       this._loopImageDataByBlockPixel(blockWidth, blockHeight, loopFn, progress);
@@ -78,6 +82,15 @@ class PixelCooler {
     };
   }
 
+  /**
+   * 将已更新的像素块数据写入像素暂存区中
+   * @param  {Array} u8cArray             像素暂存区，每次更新canvas的过程，实际上都是将像素暂存区的数据推入canvas的ImageData的过程
+   * @param  {Array} updatedBlockPixelArr 已更新的像素块
+   * @param  {Number} x                   像素块的左上角x坐标
+   * @param  {Number} y                   像素块的左上角y坐标
+   * @param  {Number} blockWidth          像素块的宽度
+   * @param  {Number} blockHeight         像素块的高度
+   */
   _putDataIntoU8cArray(u8cArray, updatedBlockPixelArr, x, y, blockWidth, blockHeight) {
     for (let i = y; i < y + blockHeight; i++) {
       for (let j = x; j < x + blockWidth; j++) {
@@ -98,7 +111,7 @@ class PixelCooler {
 
     for (let i = y; i < y + blockHeight; i++) {
       for (let j = x; j < x + blockWidth; j++) {
-        const k = (i * blockWidth + j) * 4;
+        const k = (i * this._canvas.width + j) * 4;
         arr.push({
           r: imageDataArr[k],
           g: imageDataArr[k + 1],
@@ -143,7 +156,8 @@ class PixelCooler {
     this._eventsQueue[eventName].forEach(fn => fn());
   }
 
-  play() {
+  play(extraProps = {}) {
+    this._extraProps = extraProps;
     this._fireEventsCallback('play');
     this._frameani.play();
     return this;

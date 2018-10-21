@@ -1,21 +1,64 @@
 export default {
-  normal: function(pixel) {
-    return pixel;
+  normal: function({
+    progress,
+    blockPixelArr,
+    x,
+    y, 
+    width, 
+    height,
+    blockWidth,
+    blockHeight,
+  } = {}) {
+    return blockPixelArr;
   },
 
-  gridCutIn: function(pixel, progress, x, y, width, height) {
-    const value = progress * 255;
-    if (
-      y / height < value / 255 &&
-      parseInt(y / 5) % 2 === 0 &&
-      x / width < value / 255 &&
-      parseInt(x / 5) % 2 === 0
-    ) {
-      pixel.a = value;
+  wave: function({
+    progress,
+    blockPixelArr,
+    x,
+    y, 
+    width, 
+    height,
+    blockWidth,
+    blockHeight,
+  } = {}, {
+    preColor,
+    nextColor
+  } = {}) {
+    let color;
+    if (x / width - progress <= 0 && (Math.random() - Math.pow(progress, 6)) < Math.abs(x / width - progress) * 2) {
+      color = {
+        r: nextColor[0],
+        g: nextColor[1],
+        b: nextColor[2],
+        a: nextColor[3],
+      };
     } else {
-      pixel.a = 0;
+      color = {
+        r: preColor[0],
+        g: preColor[1],
+        b: preColor[2],
+        a: preColor[3],
+      };
     }
-    return pixel;
+
+    return blockPixelArr.map(pixel => color);
+  },
+
+  fadeIn: function(opt) {
+    const {
+      progress,
+      blockPixelArr,
+      x,
+      y, 
+      width, 
+      height,
+      blockWidth,
+      blockHeight,
+    } = opt;
+    const a = Math.random() < progress ? 255 : 0;
+    blockPixelArr.forEach(pixel => (pixel.a = a));
+    return blockPixelArr;
   },
 
   granularCutInLeft: function(opt) {

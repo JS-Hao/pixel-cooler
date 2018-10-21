@@ -22,7 +22,7 @@ npm i pixel-cooler
 
 ### 代码示例
 
-以下简单的代码即可在canvas画布上实现一个“栅格切入”的动画特效：
+以下简单的代码即可在canvas画布上实现一个“wave粒子切入”的动画特效：
 
 ```javascript
 import PixelCooler from 'pixel-cooler';
@@ -30,11 +30,14 @@ import PixelCooler from 'pixel-cooler';
 const canvas = document.querySelector('#canvas');
 const pixelCooler = new PixelCooler({
 	canvas: canvas,
-	type: 'gridTranslateIn',
+	type: 'wave',
 	duration: 3000,
 });
 
-pixelCooler.play();
+pixelCooler.play({
+  preColor: [255, 165, 0, 255],
+  nextColor: [0, 0, 128, 255]
+});
 
 ```
 
@@ -71,8 +74,9 @@ pixelCooler.play();
 
 移除指定事件下的回调函数
 
-### pixelCooler.play()
+### pixelCooler.play([options])
 
+* **options** 动画播放相关参数，不同种类动画的参数可能不同
 * **returns**  `PixelCooler` pixelCooler自身
 
 播放动画
