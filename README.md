@@ -12,6 +12,8 @@ PixelCooler具备以下特征：
 
 ## DEMO
 
+[在线demo展示(拓展中)](https://js-hao.github.io/pixel-cooler)
+
 ## 快速开始
 
 ### 安装
@@ -43,7 +45,7 @@ pixelCooler.play({
 
 ## 自定义像素动画特效
 
-如果你对内置的动画特效不满意，或者想创建一个独一无二的属于你自己的动画特效，PixelCooler能够满足你，你唯一需要做的，就是阅读这篇文档[如何创建属于自己的像素动画特效？](https://github.com/JS-Hao/pixel-cooler)，跟着实例走，即可逐步实现。
+如果你对内置的动画特效不满意，或者想创建一个独一无二的属于你自己的动画特效，PixelCooler能够满足你，你唯一需要做的，就是阅读这篇文档[如何创建属于自己的像素动画特效？(施工中...)](https://github.com/JS-Hao/pixel-cooler)，跟着实例走，即可逐步实现。
 
 ## API
 
