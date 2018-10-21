@@ -3,39 +3,67 @@
 
 <head>
     <meta charset="utf-8">
-    <title>pixel-cooler demo</title>
+    <title>test page</title>
     <style type="text/css">
+      html, body, div {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #000;
+      }
       #app {
         display: flex;
+        flex-wrap: wrap;
       }    
       .wrapper {
-        width: 600px;
-        height: 250px;
         text-align: center;
+        border: #7FFF00 1px solid;
+        margin: 20px;
       }
       .canvas {
         margin: 0 auto;
         display: block;
+        background: #000;
+        border: #7FFF00 1px solid;
+      }
+      .fadeIn {
+        background: #fff;
       }
       .btn {
         margin: 10px;
         padding: 4px;
-        border: 1px solid #444;
-        background: #fff;
-        color: #444;
+        border: 1px solid #7FFF00;
+        background: #000;
+        color: #7FFF00;
         outline: none;
         cursor: pointer;
       }
       .btn:hover {
-        color: #444;
-        background: #ddd;
+        color: #000;
+        background: #7FFF00;
+      }
+      .title {
+        margin: 0;
+        padding: 0;
+        font-size: 18px;
+        color: #7FFF00;
+        margin: 5px 0;
+      }
+      .pixel-icon {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 300px;
       }
     </style>
 </head>
 
 <body>
-  <div id="app"></div>
-  <script type="text/javascript" src="pixel-cooler.min.js"></script>
+  <div id="app">\
+    <img class="pixel-icon" src="./static/images/pixel-icon.png">
+  </div>
+  <script type="text/javascript" src="./pixel-cooler.min.js"></script>
   <script type="text/javascript">
     const types = [
       {
@@ -58,9 +86,9 @@
     ];
 
     types.forEach(type => {
-      const canvas = createCanvas(200, 200);
+      const canvas = createCanvas(type.type, 200, 200);
       const pixelCooler = new PixelCooler(Object.assign({}, { canvas }, type));
-      createContent(canvas, pixelCooler);
+      createContent(type.type, canvas, pixelCooler);
       pixelCooler.play({
         preColor: [255, 165, 0, 255],
         nextColor: [0, 0, 128, 255]
@@ -68,8 +96,16 @@
       pixelCooler.reset();
     });
 
-    function createContent(canvas, pixelCooler) {
+    function createTitle(type) {
+      const h6 = document.createElement('h6');
+      h6.innerText = type;
+      h6.className = 'title'
+      return h6;
+    }
+
+    function createContent(titleName, canvas, pixelCooler) {
       const cpn = [
+        createTitle(titleName),
         canvas,
         createBtn('START', () => pixelCooler.play({
           preColor: [255, 165, 0, 255],
@@ -83,11 +119,11 @@
       return createWrapper(cpn);
     }
 
-    function createCanvas(w, h) {
+    function createCanvas(type, w, h) {
       const canvas = document.createElement('canvas');
       canvas.width = w;
       canvas.height = h;
-      canvas.className = 'canvas';
+      canvas.className = `${ type } canvas`;
       return canvas;
     }
 

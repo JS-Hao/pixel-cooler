@@ -56,7 +56,7 @@ export default {
       blockWidth,
       blockHeight,
     } = opt;
-    const a = Math.random() < progress ? 255 : 0;
+    const a = Math.random() < progress ? 0 : 255;
     blockPixelArr.forEach(pixel => (pixel.a = a));
     return blockPixelArr;
   },
